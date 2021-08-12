@@ -4,5 +4,6 @@ from . import views
 
 app_name = 'ice'
 urlpatterns = [
-    path('productprediction/', views.product_prediction),
+    path('pr/', views.product_prediction),
+    path('aa/', views.aaa),
 ]

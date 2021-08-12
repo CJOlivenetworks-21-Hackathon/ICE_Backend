@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a89c31d7-81b9-4bbd-a022-2d74f45a8218" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/DjangoServer/ice/load.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DjangoServer/DjangoServer/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/DjangoServer/DjangoServer/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DjangoServer/ice/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/DjangoServer/ice/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DjangoServer/ice/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/DjangoServer/ice/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DjangoServer/ice/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/DjangoServer/ice/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +32,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/DjangoServer/darkflow" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager">
@@ -72,11 +73,22 @@
       <workItem from="1628607363427" duration="31000" />
       <workItem from="1628607395385" duration="18000" />
       <workItem from="1628607441769" duration="331000" />
-      <workItem from="1628640027441" duration="19154000" />
+      <workItem from="1628640027441" duration="38975000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

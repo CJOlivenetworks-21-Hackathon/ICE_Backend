@@ -1,31 +1,30 @@
 import json
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseNotFound
 from rest_framework.decorators import api_view
 from rest_framework import status
 import os
 import pymysql
+from . import load
+# import cv2
+import subprocess
+import time
 
-image_dir = 'image경로'
+image_dir = '/root/ice_images/'
 user_allergy = '돼지고기'
 
 rds_host = "localhost"
 name = "root"
 password = "cjon"
 db_name = "ice"
-conn = pymysql.connect(host=rds_host, user=name, passwd=password, db=db_name, connect_timeout=5)
+conn = pymysql.connect(host=rds_host, user=name, passwd=password, db=db_name, connect_timeout=5, charset='utf8',
+                       autocommit=True)
 
 
 @api_view(['GET', 'POST'])
 def product_prediction(request):
     if request.method == 'GET':
+        curs = conn.cursor()
         return HttpResponse("웹 TEST", status=status.HTTP_200_OK)
-        # try:
-        #     with conn.cursor() as cursor:
-        #         cursor.execute("select * from product;")
-        #         allergy_list = cursor.fetchall()
-        # finally:
-        #     conn.close()
-        # return HttpResponse({"모냐": allergy_list}, status=status.HTTP_200_OK)
     elif request.method == 'POST':
         try:
             filename = str(request.FILES['image'])
@@ -34,23 +33,58 @@ def product_prediction(request):
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
         image_source = image_dir + filename
-        predict_result = predict_products(image_source)
+        predict_products(image_source)
+        # predict_result = predict_products(image_source)
+        # return HttpResponse("POST 된당", status=status.HTTP_200_OK)
 
         # 임시 데이터
-        predict_result = [{"name": "코카콜라", "x": 100, "y": 200, "w": 50, "h": 100},
-                          {"name": '스팸', "x": 200, "y": 300, "w": 100, "h": 100}]
+        # predict_result = [{"name": "코카콜라", "x": 100, "y": 200, "w": 50, "h": 100},
+        #                   {"name": '스팸', "x": 200, "y": 300, "w": 100, "h": 100}]
+        #
+        # for product in predict_result:
+        #     product['is_safe'] = filtering_allergy(product['name'])
 
-        for product in predict_result:
-            product['is_safe'] = filtering_allergy(product['name'])
+        json_response = {"result": 'asdasdasd'}
+        # os.remove(image_source)
 
-        json_response = {"result": predict_result}
-        os.remove(image_source)
+        time.sleep(10)
+        file_location = image_dir + 'out/' + filename
+        try:
+            with open(file_location, 'rb') as f:
+                file_data = f.read()
+
+            response = HttpResponse(file_data, content_type='image/*')
+        except IOError:
+            response = HttpResponseNotFound('File not exist')
+        return response
+
+
+# test
+@api_view(['GET', 'POST'])
+def aaa(request):
+    if request.method == 'GET':
+        return HttpResponse("웹 TEST", status=status.HTTP_200_OK)
+    elif request.method == 'POST':
+        try:
+            filename = str(request.FILES['image'])
+            handle_uploaded_file(request.FILES['image'], filename)
+        except:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+        image_source = image_dir + filename
+
+        json_response = {"result": 'ㅎㅇㅎㅇ'}
+        # os.remove(image_source)
+
         return JsonResponse(json_response, status=status.HTTP_200_OK)
 
 
 # 임시
 def predict_products(chunk):
-    return 1
+    process = subprocess.Popen(['python', '/root/DjangoServer/darkflow/flow', '--pbLoad',
+                                '/root/DjangoServer/darkflow/built_graph/saved_model.pb',
+                                '--metaLoad', '/root/DjangoServer/darkflow/built_graph/saved_model.meta',
+                                '--imgdir', '/root/ice_images/'])
 
 
 def handle_uploaded_file(f, filename):
