@@ -11,18 +11,17 @@ import time
 import base64
 
 image_dir = '/root/ice_images/'
-user_allergy = '돼지고기'
+# user_allergy = '돼지고기'
 
 rds_host = "localhost"
-name = "root"
-password = "cjon"
+name = ""
+password = ""
 db_name = "ice"
-conn = pymysql.connect(host=rds_host, user=name, passwd=password, db=db_name, connect_timeout=5, charset='utf8',
-                       autocommit=True)
+# conn = pymysql.connect(host=rds_host, user=name, passwd=password, db=db_name, connect_timeout=5, charset='utf8',
+#                        autocommit=True)
 
 
 def get_base64_encoding(file):
-    # img_64encoded = base64.encodebytes(file)
     img_64encoded = base64.urlsafe_b64encode(file).decode("UTF-8")
     return str(img_64encoded)
 
@@ -41,8 +40,8 @@ def product_prediction(request):
 
         image_source = image_dir + filename
         predict_products(image_source)
+
         # predict_result = predict_products(image_source)
-        # return HttpResponse("POST 된당", status=status.HTTP_200_OK)
 
         # 임시 데이터
         # predict_result = [{"name": "코카콜라", "x": 100, "y": 200, "w": 50, "h": 100},
@@ -68,28 +67,6 @@ def product_prediction(request):
             response = HttpResponseNotFound('File not exist')
 
 
-# test
-@api_view(['GET', 'POST'])
-def aaa(request):
-    if request.method == 'GET':
-        return HttpResponse("웹 TEST", status=status.HTTP_200_OK)
-
-    elif request.method == 'POST':
-        try:
-            filename = str(request.FILES['image'])
-            handle_uploaded_file(request.FILES['image'], filename)
-        except:
-            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
-
-        image_source = image_dir + filename
-
-        json_response = {"result": 'ㅎㅇㅎㅇ'}
-        os.remove(image_source)
-
-        return JsonResponse(json_response, status=status.HTTP_200_OK)
-
-
-# 임시
 def predict_products(image_source):
     # img = cv2.imread(image_source)
     # img_rotate_90_counterclockwise = cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)

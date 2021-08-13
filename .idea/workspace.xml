@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a89c31d7-81b9-4bbd-a022-2d74f45a8218" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DjangoServer/ice/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/DjangoServer/ice/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DjangoServer/ice/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/DjangoServer/ice/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,7 +72,7 @@
       <workItem from="1628607395385" duration="18000" />
       <workItem from="1628607441769" duration="331000" />
       <workItem from="1628640027441" duration="39275000" />
-      <workItem from="1628812054629" duration="5895000" />
+      <workItem from="1628812054629" duration="6240000" />
     </task>
     <servers />
   </component>
