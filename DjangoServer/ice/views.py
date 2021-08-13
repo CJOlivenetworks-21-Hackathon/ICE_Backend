@@ -5,9 +5,10 @@ from rest_framework import status
 import os
 import pymysql
 from . import load
-# import cv2
+import cv2
 import subprocess
 import time
+import base64
 
 image_dir = '/root/ice_images/'
 user_allergy = '돼지고기'
@@ -20,10 +21,16 @@ conn = pymysql.connect(host=rds_host, user=name, passwd=password, db=db_name, co
                        autocommit=True)
 
 
+def get_base64_encoding(file):
+    # img_64encoded = base64.encodebytes(file)
+    img_64encoded = base64.urlsafe_b64encode(file).decode("UTF-8")
+    return str(img_64encoded)
+
+
 @api_view(['GET', 'POST'])
 def product_prediction(request):
     if request.method == 'GET':
-        curs = conn.cursor()
+        # curs = conn.cursor()
         return HttpResponse("웹 TEST", status=status.HTTP_200_OK)
     elif request.method == 'POST':
         try:
@@ -44,19 +51,21 @@ def product_prediction(request):
         # for product in predict_result:
         #     product['is_safe'] = filtering_allergy(product['name'])
 
-        json_response = {"result": 'asdasdasd'}
-        # os.remove(image_source)
-
         time.sleep(10)
+        print("Object Detection Completed")
         file_location = image_dir + 'out/' + filename
         try:
             with open(file_location, 'rb') as f:
                 file_data = f.read()
+                encoded = get_base64_encoding(file_data)
+                json_response = {"image": encoded}
 
-            response = HttpResponse(file_data, content_type='image/*')
+                os.remove(image_source)
+                os.remove(file_location)
+                return JsonResponse(json_response, status=status.HTTP_200_OK)
+
         except IOError:
             response = HttpResponseNotFound('File not exist')
-        return response
 
 
 # test
@@ -64,6 +73,7 @@ def product_prediction(request):
 def aaa(request):
     if request.method == 'GET':
         return HttpResponse("웹 TEST", status=status.HTTP_200_OK)
+
     elif request.method == 'POST':
         try:
             filename = str(request.FILES['image'])
@@ -74,17 +84,22 @@ def aaa(request):
         image_source = image_dir + filename
 
         json_response = {"result": 'ㅎㅇㅎㅇ'}
-        # os.remove(image_source)
+        os.remove(image_source)
 
         return JsonResponse(json_response, status=status.HTTP_200_OK)
 
 
 # 임시
-def predict_products(chunk):
+def predict_products(image_source):
+    # img = cv2.imread(image_source)
+    # img_rotate_90_counterclockwise = cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)
+    # cv2.imwrite(image_source, img_rotate_90_counterclockwise)
+    print("Object Detection Start")
     process = subprocess.Popen(['python', '/root/DjangoServer/darkflow/flow', '--pbLoad',
                                 '/root/DjangoServer/darkflow/built_graph/saved_model.pb',
                                 '--metaLoad', '/root/DjangoServer/darkflow/built_graph/saved_model.meta',
-                                '--imgdir', '/root/ice_images/'])
+                                '--imgdir', '/root/ice_images/',
+                                '--threshold', '0.15'])
 
 
 def handle_uploaded_file(f, filename):
